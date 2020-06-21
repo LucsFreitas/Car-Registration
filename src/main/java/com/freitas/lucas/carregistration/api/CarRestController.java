@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,5 +40,12 @@ public class CarRestController {
     public ResponseEntity<CarDTO> create (@RequestBody @Valid CarDTO car) {
         Car newCar = this.carService.save(car.toEntity());
         return new ResponseEntity<>(new CarDTO(newCar), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation(value = "Buscar um carro pelo id")
+    public ResponseEntity<CarDTO> findById(@PathVariable Long id) {
+        Car car = this.carService.findById(id);
+        return new ResponseEntity<>(new CarDTO(car), HttpStatus.OK);
     }
 }
