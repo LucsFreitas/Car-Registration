@@ -1,15 +1,20 @@
 package com.freitas.lucas.carregistration.domain;
 
+import com.freitas.lucas.carregistration.domain.enums.Role;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class User {
@@ -50,6 +55,10 @@ public class User {
      * Senha do usuário
      */
     private String password;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name="profiles")
+    private List<Integer> profiles = new ArrayList<>();
 
     /**
      * Telefone do usuário
@@ -118,6 +127,16 @@ public class User {
         this.password = password;
     }
 
+    public List<Role> getProfiles() {
+        return profiles.stream()
+                .map(Role::toEnum)
+                .collect(Collectors.toList());
+    }
+
+    public void addProfile(Role profile) {
+        this.profiles.add(profile.getCode());
+    }
+
     public String getPhone() {
         return phone;
     }
@@ -137,5 +156,6 @@ public class User {
 
     public User() {
         this.cars = new ArrayList<>();
+        addProfile(Role.DEFAULT);
     }
 }
