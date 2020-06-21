@@ -4,12 +4,13 @@ import com.freitas.lucas.carregistration.domain.Car;
 import com.freitas.lucas.carregistration.domain.User;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class CarDTO {
 
     private Long id;
 
-    @NotBlank(message = "{year.not.blank}")
+    @NotNull(message = "{year.not.null}")
     private Integer year;
 
     @NotBlank(message = "{licensePlate.not.blank}")
