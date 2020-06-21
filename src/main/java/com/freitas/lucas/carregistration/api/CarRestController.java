@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,5 +48,12 @@ public class CarRestController {
     public ResponseEntity<CarDTO> findById(@PathVariable Long id) {
         Car car = this.carService.findById(id);
         return new ResponseEntity<>(new CarDTO(car), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "Remover um carro pelo id")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        this.carService.delete(id);
+        return ResponseEntity.ok().build();
     }
 }

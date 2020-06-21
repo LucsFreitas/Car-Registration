@@ -39,4 +39,10 @@ public class CarServiceImpl implements CarService {
         Optional<Car> car = this.carRepository.findById(id);
         return car.orElseThrow(() -> new ObjectNotFoundException("Car not found for id " + id));
     }
+
+    @Override
+    public void delete(Long id) {
+        Car car = findById(id);
+        this.carRepository.delete(car);
+    }
 }
