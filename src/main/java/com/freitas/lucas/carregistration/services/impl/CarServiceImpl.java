@@ -45,4 +45,12 @@ public class CarServiceImpl implements CarService {
         Car car = findById(id);
         this.carRepository.delete(car);
     }
+
+
+    @Override
+    public Car update(Car car) {
+        Car old = findById(car.getId());
+        car.setOwner(old.getOwner());
+        return this.carRepository.save(car);
+    }
 }
