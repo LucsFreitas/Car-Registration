@@ -123,22 +123,4 @@ public class UserDTO {
             this.cars = user.getCars().stream().map(CarDTO::new).collect(Collectors.toList());
         }
     }
-
-    public User toEntity() {
-        User user = new User();
-        user.setId(this.id);
-        user.setFirstName(this.firstName);
-        user.setLastName(this.lastName);
-        user.setBirthday(this.birthday);
-        user.setEmail(this.email);
-        user.setLogin(this.login);
-        user.setPassword(this.password);
-        user.setPhone(this.phone);
-        if (this.cars != null) {
-            user.setCars(this.cars.stream()
-                    .map(car -> car.toEntityWithOwner(user))
-                    .collect(Collectors.toList()));
-        }
-        return user;
-    }
 }

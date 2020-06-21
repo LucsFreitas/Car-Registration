@@ -39,8 +39,8 @@ public class UserRestController {
 
     @PostMapping
     @ApiOperation(value = "Cadastrar um novo usuário")
-    public ResponseEntity<UserDTO> create (@RequestBody @Valid UserDTO user) {
-        User newUser = this.userService.save(user.toEntity());
+    public ResponseEntity<UserDTO> create (@RequestBody @Valid UserDTO userDTO) {
+        User newUser = this.userService.save(this.userService.fromDTO(userDTO));
         return new ResponseEntity<>(new UserDTO(newUser), HttpStatus.CREATED);
     }
 
@@ -62,7 +62,7 @@ public class UserRestController {
     @ApiOperation(value = "Atualizar um usuário pelo id")
     public ResponseEntity <UserDTO> updateById(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
         userDTO.setId(id);
-        User user = this.userService.update(userDTO.toEntity());
+        User user = this.userService.update(this.userService.fromDTO(userDTO));
         return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
     }
 }
