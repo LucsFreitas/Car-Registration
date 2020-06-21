@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -130,6 +131,11 @@ public class User {
     }
 
     public void setCars(List<Car> cars) {
-        this.cars = cars;
+        this.cars.clear();
+        this.cars.addAll(cars);
+    }
+
+    public User() {
+        this.cars = new ArrayList<>();
     }
 }

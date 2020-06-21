@@ -23,12 +23,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(User user) {
+    public User save(User user) {
 
-        if (userRepository.findByLogin(user.getLogin()).isPresent()){
+        if (userRepository.findByLogin(user.getLogin())
+                .filter(element -> !element.getId().equals(user.getId()))
+                .isPresent()){
             throw new ObjectAlreadyExists("Login already exists.");
         }
-        if (userRepository.findByEmail(user.getEmail()).isPresent()){
+        if (userRepository.findByEmail(user.getEmail())
+                .filter(element -> !element.getId().equals(user.getId()))
+                .isPresent()){
             throw new ObjectAlreadyExists("Email already exists.");
         }
 
@@ -45,5 +49,12 @@ public class UserServiceImpl implements UserService {
     public void delete(Long id) {
         User user = findById(id);
         this.userRepository.delete(user);
+    }
+
+    @Override
+    public User update(User user) {
+        User old = findById(user.getId());
+        user.setCars(old.getCars());
+        return this.userRepository.save(user);
     }
 }
