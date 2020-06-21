@@ -40,4 +40,10 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = this.userRepository.findById(id);
         return user.orElseThrow(() -> new ObjectNotFoundException("User not found for id " + id));
     }
+
+    @Override
+    public void delete(Long id) {
+        User user = findById(id);
+        this.userRepository.delete(user);
+    }
 }

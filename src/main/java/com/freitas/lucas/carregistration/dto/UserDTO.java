@@ -1,6 +1,5 @@
 package com.freitas.lucas.carregistration.dto;
 
-import com.freitas.lucas.carregistration.domain.Car;
 import com.freitas.lucas.carregistration.domain.User;
 
 import javax.validation.constraints.Email;
@@ -8,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserDTO {
 
@@ -35,7 +35,7 @@ public class UserDTO {
     @NotBlank(message = "{phone.not.blank}")
     private String phone;
 
-    private List<Car> cars;
+    private List<CarDTO> cars;
 
     public Long getId() {
         return id;
@@ -101,11 +101,11 @@ public class UserDTO {
         this.phone = phone;
     }
 
-    public List<Car> getCars() {
+    public List<CarDTO> getCars() {
         return cars;
     }
 
-    public void setCars(List<Car> cars) {
+    public void setCars(List<CarDTO> cars) {
         this.cars = cars;
     }
 
@@ -119,7 +119,9 @@ public class UserDTO {
         this.birthday = user.getBirthday();
         this.email = user.getEmail();
         this.phone = user.getPhone();
-        this.cars = user.getCars();
+        if (user.getCars() != null) {
+            this.cars = user.getCars().stream().map(CarDTO::new).collect(Collectors.toList());
+        }
     }
 
     public User toEntity() {
@@ -132,7 +134,11 @@ public class UserDTO {
         user.setLogin(this.login);
         user.setPassword(this.password);
         user.setPhone(this.phone);
-        user.setCars(this.cars);
+        if (this.cars != null) {
+            user.setCars(this.cars.stream()
+                    .map(car -> car.toEntityWithOwner(user))
+                    .collect(Collectors.toList()));
+        }
         return user;
     }
 }

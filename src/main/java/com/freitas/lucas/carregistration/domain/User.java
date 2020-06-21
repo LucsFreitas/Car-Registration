@@ -2,6 +2,7 @@ package com.freitas.lucas.carregistration.domain;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -57,7 +58,7 @@ public class User {
     /**
      * Lista de carros do usuário
      */
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = { CascadeType.PERSIST }, orphanRemoval = true)
     private List<Car> cars;
 
     public Long getId() {

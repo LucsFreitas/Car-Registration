@@ -1,6 +1,7 @@
 package com.freitas.lucas.carregistration.dto;
 
 import com.freitas.lucas.carregistration.domain.Car;
+import com.freitas.lucas.carregistration.domain.User;
 
 import javax.validation.constraints.NotBlank;
 
@@ -78,6 +79,12 @@ public class CarDTO {
         car.setLicensePlate(this.licensePlate);
         car.setModel(this.model);
         car.setYear(this.year);
+        return car;
+    }
+
+    public Car toEntityWithOwner(User owner){
+        Car car = toEntity();
+        car.setOwner(owner);
         return car;
     }
 }
