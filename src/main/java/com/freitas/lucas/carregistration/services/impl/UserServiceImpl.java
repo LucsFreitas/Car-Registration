@@ -2,7 +2,7 @@ package com.freitas.lucas.carregistration.services.impl;
 
 import com.freitas.lucas.carregistration.domain.User;
 import com.freitas.lucas.carregistration.dto.UserDTO;
-import com.freitas.lucas.carregistration.error.exceptions.ObjectAlreadyExists;
+import com.freitas.lucas.carregistration.error.exceptions.ObjectAlreadyExistsException;
 import com.freitas.lucas.carregistration.error.exceptions.ObjectNotFoundException;
 import com.freitas.lucas.carregistration.repositories.UserRepository;
 import com.freitas.lucas.carregistration.services.UserService;
@@ -34,12 +34,12 @@ public class UserServiceImpl implements UserService {
         if (userRepository.findByLogin(user.getLogin())
                 .filter(element -> !element.getId().equals(user.getId()))
                 .isPresent()){
-            throw new ObjectAlreadyExists("Login already exists.");
+            throw new ObjectAlreadyExistsException("Login already exists.");
         }
         if (userRepository.findByEmail(user.getEmail())
                 .filter(element -> !element.getId().equals(user.getId()))
                 .isPresent()){
-            throw new ObjectAlreadyExists("Email already exists.");
+            throw new ObjectAlreadyExistsException("Email already exists.");
         }
 
         return this.userRepository.save(user);

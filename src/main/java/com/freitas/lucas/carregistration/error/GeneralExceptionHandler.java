@@ -1,6 +1,6 @@
 package com.freitas.lucas.carregistration.error;
 
-import com.freitas.lucas.carregistration.error.exceptions.ObjectAlreadyExists;
+import com.freitas.lucas.carregistration.error.exceptions.ObjectAlreadyExistsException;
 import com.freitas.lucas.carregistration.error.exceptions.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class GeneralExceptionHandler {
 
-    @ExceptionHandler(ObjectAlreadyExists.class)
-    public ResponseEntity<ErrorResponse> objectAlreadyExists(ObjectAlreadyExists e, HttpServletRequest request) {
+    @ExceptionHandler(ObjectAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> objectAlreadyExists(ObjectAlreadyExistsException e, HttpServletRequest request) {
         ErrorResponse err = new ErrorResponse(e.getMessage(), HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.name(), null);
         return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
     }

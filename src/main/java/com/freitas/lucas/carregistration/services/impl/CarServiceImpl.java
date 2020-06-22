@@ -1,7 +1,7 @@
 package com.freitas.lucas.carregistration.services.impl;
 
 import com.freitas.lucas.carregistration.domain.Car;
-import com.freitas.lucas.carregistration.error.exceptions.ObjectAlreadyExists;
+import com.freitas.lucas.carregistration.error.exceptions.ObjectAlreadyExistsException;
 import com.freitas.lucas.carregistration.error.exceptions.ObjectNotFoundException;
 import com.freitas.lucas.carregistration.repositories.CarRepository;
 import com.freitas.lucas.carregistration.services.CarService;
@@ -28,7 +28,7 @@ public class CarServiceImpl implements CarService {
         if (carRepository.findByLicensePlate(car.getLicensePlate())
                 .filter(element -> !element.getId().equals(car.getId()))
                 .isPresent()){
-            throw new ObjectAlreadyExists("License plate already exists.");
+            throw new ObjectAlreadyExistsException("License plate already exists.");
         }
 
         return this.carRepository.save(car);
