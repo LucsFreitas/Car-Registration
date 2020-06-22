@@ -18,4 +18,6 @@ public interface UserService {
     User update(User user);
 
     User fromDTO (UserDTO userDTO);
+
+    User getCurrentUser();
 }

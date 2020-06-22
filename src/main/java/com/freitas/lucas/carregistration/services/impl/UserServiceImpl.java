@@ -4,12 +4,16 @@ import com.freitas.lucas.carregistration.domain.User;
 import com.freitas.lucas.carregistration.dto.UserDTO;
 import com.freitas.lucas.carregistration.error.exceptions.ObjectAlreadyExistsException;
 import com.freitas.lucas.carregistration.error.exceptions.ObjectNotFoundException;
+import com.freitas.lucas.carregistration.error.exceptions.UnauthorizedException;
 import com.freitas.lucas.carregistration.repositories.UserRepository;
+import com.freitas.lucas.carregistration.security.AuthenticationService;
+import com.freitas.lucas.carregistration.security.UserSS;
 import com.freitas.lucas.carregistration.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,7 +45,7 @@ public class UserServiceImpl implements UserService {
                 .isPresent()){
             throw new ObjectAlreadyExistsException("Email already exists.");
         }
-
+        user.setCreatedAt(new Date(System.currentTimeMillis()));
         return this.userRepository.save(user);
     }
 
@@ -81,5 +85,14 @@ public class UserServiceImpl implements UserService {
                     .collect(Collectors.toList()));
         }
         return user;
+    }
+
+    @Override
+    public User getCurrentUser() {
+        UserSS authenticated = AuthenticationService.authenticated();
+        if (authenticated == null) {
+            throw new UnauthorizedException("Unauthorized.");
+        }
+        return this.findById(authenticated.getId());
     }
 }

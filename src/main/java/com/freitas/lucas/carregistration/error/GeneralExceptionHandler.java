@@ -3,6 +3,7 @@ package com.freitas.lucas.carregistration.error;
 import com.freitas.lucas.carregistration.error.exceptions.ForbiddenException;
 import com.freitas.lucas.carregistration.error.exceptions.ObjectAlreadyExistsException;
 import com.freitas.lucas.carregistration.error.exceptions.ObjectNotFoundException;
+import com.freitas.lucas.carregistration.error.exceptions.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -31,5 +32,10 @@ public class GeneralExceptionHandler {
     @ExceptionHandler(ForbiddenException.class)
     public ResponseEntity<ErrorResponse> forbiddenException(ForbiddenException e, HttpServletRequest request) {
         return createResponse(HttpStatus.FORBIDDEN, e.getMessage());
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorResponse> unauthorizedException(UnauthorizedException e, HttpServletRequest request) {
+        return createResponse(HttpStatus.UNAUTHORIZED, e.getMessage());
     }
 }

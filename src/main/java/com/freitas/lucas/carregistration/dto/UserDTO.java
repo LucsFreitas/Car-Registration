@@ -35,6 +35,10 @@ public class UserDTO {
     @NotBlank(message = "{phone.not.blank}")
     private String phone;
 
+    private Date createdAt;
+
+    private Date lastLogin;
+
     private List<CarDTO> cars;
 
     public Long getId() {
@@ -109,6 +113,22 @@ public class UserDTO {
         this.cars = cars;
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
     public UserDTO() {
     }
 
@@ -118,6 +138,9 @@ public class UserDTO {
         this.lastName = user.getLastName();
         this.birthday = user.getBirthday();
         this.email = user.getEmail();
+        this.login = user.getLogin();
+        this.createdAt = user.getCreatedAt();
+        this.lastLogin = user.getLastLogin();
         this.phone = user.getPhone();
         if (user.getCars() != null) {
             this.cars = user.getCars().stream().map(CarDTO::new).collect(Collectors.toList());

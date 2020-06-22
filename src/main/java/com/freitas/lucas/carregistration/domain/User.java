@@ -71,6 +71,16 @@ public class User {
     @OneToMany(mappedBy = "owner", cascade = { CascadeType.PERSIST }, orphanRemoval = true)
     private List<Car> cars;
 
+    /**
+     * Data de criação do usuário
+     */
+    private Date createdAt;
+
+    /**
+     * Data do último login
+     */
+    private Date lastLogin;
+
     public Long getId() {
         return id;
     }
@@ -152,6 +162,22 @@ public class User {
     public void setCars(List<Car> cars) {
         this.cars.clear();
         this.cars.addAll(cars);
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
     }
 
     public User() {
