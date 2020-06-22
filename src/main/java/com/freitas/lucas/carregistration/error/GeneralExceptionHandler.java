@@ -1,5 +1,6 @@
 package com.freitas.lucas.carregistration.error;
 
+import com.freitas.lucas.carregistration.error.exceptions.ForbiddenException;
 import com.freitas.lucas.carregistration.error.exceptions.ObjectAlreadyExistsException;
 import com.freitas.lucas.carregistration.error.exceptions.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -12,15 +13,23 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class GeneralExceptionHandler {
 
+    private ResponseEntity<ErrorResponse> createResponse(HttpStatus httpStatus, String message) {
+        ErrorResponse err = new ErrorResponse(message, httpStatus.value(), httpStatus.name(), null);
+        return new ResponseEntity<>(err, httpStatus);
+    }
+
     @ExceptionHandler(ObjectAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> objectAlreadyExists(ObjectAlreadyExistsException e, HttpServletRequest request) {
-        ErrorResponse err = new ErrorResponse(e.getMessage(), HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.name(), null);
-        return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
+        return createResponse(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
     @ExceptionHandler(ObjectNotFoundException.class)
     public ResponseEntity<ErrorResponse> objectNotFoundException(ObjectNotFoundException e, HttpServletRequest request) {
-        ErrorResponse err = new ErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.name(), null);
-        return new ResponseEntity<>(err, HttpStatus.NOT_FOUND);
+        return createResponse(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ErrorResponse> forbiddenException(ForbiddenException e, HttpServletRequest request) {
+        return createResponse(HttpStatus.FORBIDDEN, e.getMessage());
     }
 }

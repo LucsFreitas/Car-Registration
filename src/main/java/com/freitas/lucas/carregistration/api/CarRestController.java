@@ -28,7 +28,7 @@ public class CarRestController {
     private CarService carService;
 
     @GetMapping
-    @ApiOperation(value = "Lista todos os carros")
+    @ApiOperation(value = "Lista todos os carros do usuário logado")
     public ResponseEntity<List<CarDTO>> findAll () {
         List<CarDTO> listDTO = this.carService.findAll()
                 .stream()
@@ -38,28 +38,28 @@ public class CarRestController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Cadastrar um novo carro")
+    @ApiOperation(value = "Cadastrar um novo carro para o usuário logado")
     public ResponseEntity<CarDTO> create (@RequestBody @Valid CarDTO car) {
         Car newCar = this.carService.save(car.toEntity());
         return new ResponseEntity<>(new CarDTO(newCar), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Buscar um carro pelo id")
+    @ApiOperation(value = "Buscar um carro do usuário logado pelo id")
     public ResponseEntity<CarDTO> findById(@PathVariable Long id) {
         Car car = this.carService.findById(id);
         return new ResponseEntity<>(new CarDTO(car), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "Remover um carro pelo id")
+    @ApiOperation(value = "Remover um carro do usuário logado pelo id")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         this.carService.delete(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    @ApiOperation(value = "Atualizar um carro pelo id")
+    @ApiOperation(value = "Atualizar um carro do usuário logado pelo id")
     public ResponseEntity <CarDTO> updateById(@PathVariable Long id, @Valid @RequestBody CarDTO carDTO) {
         carDTO.setId(id);
         Car car = this.carService.update(carDTO.toEntity());
