@@ -20,4 +20,6 @@ public interface UserService {
     User fromDTO (UserDTO userDTO);
 
     User getCurrentUser();
+
+    void registerLogin (String username);
 }

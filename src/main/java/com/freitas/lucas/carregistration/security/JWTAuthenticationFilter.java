@@ -2,6 +2,7 @@ package com.freitas.lucas.carregistration.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.freitas.lucas.carregistration.dto.CredentialsDTO;
+import com.freitas.lucas.carregistration.services.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,10 +24,13 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private JWTUtil jwtUtil;
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
+    private UserService userService;
+
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil, UserService userService) {
         setAuthenticationFailureHandler(new JWTAuthenticationFailureHandler());
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+        this.userService = userService;
     }
 
     @Override
@@ -47,6 +51,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String username = ((UserSS) authResult.getPrincipal()).getUsername();
         String token = jwtUtil.generateToken(username);
         response.addHeader("Authorization", "Bearer " + token);
+
+        this.userService.registerLogin(username);
     }
 
     private static class JWTAuthenticationFailureHandler implements AuthenticationFailureHandler {

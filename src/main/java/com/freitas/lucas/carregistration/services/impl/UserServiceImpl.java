@@ -95,4 +95,15 @@ public class UserServiceImpl implements UserService {
         }
         return this.findById(authenticated.getId());
     }
+
+    @Override
+    public void registerLogin(String username) {
+        Optional<User> optionalUser = this.userRepository.findByLogin(username);
+
+        if (optionalUser.isPresent()){
+            User user = optionalUser.get();
+            user.setLastLogin(new Date(System.currentTimeMillis()));
+            save(user);
+        }
+    }
 }

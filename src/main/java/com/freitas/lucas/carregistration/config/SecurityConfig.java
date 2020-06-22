@@ -3,6 +3,7 @@ package com.freitas.lucas.carregistration.config;
 import com.freitas.lucas.carregistration.security.JWTAuthenticationFilter;
 import com.freitas.lucas.carregistration.security.JWTAuthorizationFilter;
 import com.freitas.lucas.carregistration.security.JWTUtil;
+import com.freitas.lucas.carregistration.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private JWTUtil jwtUtil;
 
     private static final String[] PUBLIC_MATCHERS = {
@@ -53,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
                 .anyRequest().authenticated();
-        http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+        http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil, userService));
         http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
