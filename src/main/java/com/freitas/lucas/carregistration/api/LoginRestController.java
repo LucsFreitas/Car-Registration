@@ -3,6 +3,7 @@ package com.freitas.lucas.carregistration.api;
 import com.freitas.lucas.carregistration.dto.CredentialsDTO;
 import com.freitas.lucas.carregistration.dto.UserDTO;
 import com.freitas.lucas.carregistration.services.UserService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Api(tags = "Login")
 public class LoginRestController {
 
     @Autowired
