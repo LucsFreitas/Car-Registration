@@ -184,4 +184,22 @@ public class User {
         this.cars = new ArrayList<>();
         addProfile(Role.DEFAULT);
     }
+
+    public User(Long id, String firstName, String lastName, String email, Date birthday, String login, String password,
+                String phone, List<Car> cars, Date createdAt, Date lastLogin) {
+        this();
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.birthday = birthday;
+        this.login = login;
+        this.password = password;
+        this.phone = phone;
+        this.createdAt = createdAt;
+        this.lastLogin = lastLogin;
+        if (cars != null) {
+            this.cars.addAll(cars);
+        }
+    }
 }
